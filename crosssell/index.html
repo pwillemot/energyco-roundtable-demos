@@ -1294,7 +1294,7 @@
             <!-- App header -->
             <div class="app-header">
                 <div class="app-header-top">
-                    <div class="app-logo" onclick="goHome()" role="button" tabindex="0" title="Back to home">
+                    <div class="app-logo" onclick="goHome()" role="button" tabindex="0" title="Back to demo menu">
                         <div class="app-logo-icon">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M13 2L4.5 13.5H11L10 22L20.5 9.5H14L13 2Z"/></svg>
                         </div>
@@ -1649,11 +1649,10 @@
             if (elSince) elSince.textContent = 'St Juliaanstraat 102 · Active since 03/' + (now.getFullYear() - 4);
         })();
 
-        // ── Tapping the EnergyCo logo returns to the home screen ──────────────
+        // ── Tapping the EnergyCo logo returns to the demo select page ─────────
         function goHome() {
-            if (isOpen) { toggleChat(); }               // close the chat if it's open
-            const body = document.querySelector('.app-body');
-            if (body) body.scrollTo({ top: 0, behavior: 'smooth' });
+            // Navigate back to the landing page (one level up) to pick another demo.
+            window.location.href = '../index.html';
         }
 
         // ── Launcher toggle ───────────────────────────────────────────────────
