@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1, interactive-widget=resizes-content" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#223D32" />
+    <title>EnergyCo · AI Demos</title>
+    <style>
+        :root {
+            --cirrus-green:       #377E51;
+            --cirrus-green-dark:  #223D32;
+            --cirrus-green-tint:  #E6F2EA;
+            --cirrus-blue:        #98BFE1;
+            --text-primary:       #223D32;
+            --text-secondary:     #5E7267;
+            --card-bg:            #FFFFFF;
+            --radius:             22px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html, body { height: 100%; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            color: var(--text-primary);
+            background: linear-gradient(160deg, var(--cirrus-green) 0%, var(--cirrus-green-dark) 100%);
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            padding: max(calc(env(safe-area-inset-top) + 28px), 56px) 22px calc(env(safe-area-inset-bottom) + 28px);
+        }
+
+        /* ── Brand header ── */
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        .brand-icon {
+            width: 34px; height: 34px;
+            border-radius: 9px;
+            background: rgba(255,255,255,0.16);
+            display: grid; place-items: center;
+        }
+        .brand-name { font-size: 20px; font-weight: 800; letter-spacing: 0.5px; }
+
+        .hero {
+            color: #fff;
+            margin: 26px 0 8px;
+        }
+        .hero h1 { font-size: 30px; font-weight: 800; line-height: 1.12; }
+        .hero p {
+            font-size: 15px;
+            color: rgba(255,255,255,0.82);
+            margin-top: 10px;
+            max-width: 34ch;
+        }
+        .hero .eyebrow {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+            color: var(--cirrus-blue);
+            margin-bottom: 12px;
+        }
+
+        /* ── Demo cards ── */
+        .cards {
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            padding-top: 30px;
+        }
+        .card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-decoration: none;
+            color: inherit;
+            box-shadow: 0 10px 34px rgba(34,61,50,0.28);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .card:active { transform: scale(0.98); box-shadow: 0 6px 20px rgba(34,61,50,0.24); }
+        .card-icon {
+            flex-shrink: 0;
+            width: 52px; height: 52px;
+            border-radius: 15px;
+            background: var(--cirrus-green-tint);
+            display: grid; place-items: center;
+        }
+        .card-text { flex: 1; }
+        .card-text h2 { font-size: 17px; font-weight: 700; }
+        .card-text p { font-size: 13px; color: var(--text-secondary); margin-top: 3px; line-height: 1.35; }
+        .card-arrow { flex-shrink: 0; color: var(--cirrus-green); }
+
+        .footnote {
+            text-align: center;
+            font-size: 12px;
+            color: rgba(255,255,255,0.6);
+            margin-top: 22px;
+        }
+    </style>
+</head>
+<body>
+    <div class="brand">
+        <div class="brand-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="M13 2L4.5 13.5H11L10 22L20.5 9.5H14L13 2Z" fill="#fff" stroke="#fff" stroke-width="0.5" stroke-linejoin="round"/>
+            </svg>
+        </div>
+        <span class="brand-name">EnergyCo</span>
+    </div>
+
+    <div class="hero">
+        <span class="eyebrow">AI Roundtable · Energy &amp; Utilities</span>
+        <h1>AI Agent Demos</h1>
+        <p>Choose a demo to launch. Each one runs a guided, self-contained conversation.</p>
+    </div>
+
+    <div class="cards">
+        <a class="card" href="crosssell/index.html">
+            <div class="card-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+                    <path d="M13 2L4.5 13.5H11L10 22L20.5 9.5H14L13 2Z" fill="#377E51" stroke="#377E51" stroke-width="0.5" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="card-text">
+                <h2>Cross-sell Agent</h2>
+                <p>Submit a meter reading, get a planned-interruption notice, then discover EV home-charging &amp; book a site visit.</p>
+            </div>
+            <div class="card-arrow">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+        </a>
+
+        <a class="card" href="reschedule/index.html">
+            <div class="card-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+                    <rect x="3" y="4.5" width="18" height="16" rx="3" stroke="#377E51" stroke-width="2"/>
+                    <path d="M3 9h18M8 2.5v4M16 2.5v4" stroke="#377E51" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M9 14.5l2 2 4-4" stroke="#377E51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="card-text">
+                <h2>Rescheduling Agent</h2>
+                <p>A WhatsApp conversation that lets a customer reschedule a technician appointment with live slot options.</p>
+            </div>
+            <div class="card-arrow">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+        </a>
+    </div>
+
+    <div class="footnote">EnergyCo demo environment · not a live service</div>
+</body>
+</html>
