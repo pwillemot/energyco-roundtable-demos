@@ -99,7 +99,9 @@
             display: flex;
             align-items: center;
             gap: 7px;
+            cursor: pointer;
         }
+        .app-logo:active { opacity: 0.7; }
 
         .app-logo-icon {
             width: 28px;
@@ -1292,7 +1294,7 @@
             <!-- App header -->
             <div class="app-header">
                 <div class="app-header-top">
-                    <div class="app-logo">
+                    <div class="app-logo" onclick="goHome()" role="button" tabindex="0" title="Back to home">
                         <div class="app-logo-icon">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M13 2L4.5 13.5H11L10 22L20.5 9.5H14L13 2Z"/></svg>
                         </div>
@@ -1305,7 +1307,7 @@
                 <p class="app-greeting">Good morning, Alex 👋</p>
                 <div class="app-ean-chip">
                     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                    Energy Street 12, Anytown
+                    St Juliaanstraat 102, 9000 Gent
                 </div>
             </div>
 
@@ -1314,7 +1316,7 @@
 
                 <!-- Consumption card -->
                 <div class="app-card">
-                    <p class="app-card-label">Your consumption · January</p>
+                    <p class="app-card-label" id="consumptionLabel">Your consumption · January</p>
                     <div style="display:flex;gap:16px;margin-bottom:10px">
                         <div>
                             <div style="font-size:11px;color:#98BFE1;font-weight:600;display:flex;align-items:center;gap:4px"><span class="legend-dot" style="background:#98BFE1"></span>Withdrawal</div>
@@ -1340,7 +1342,7 @@
                         <div class="chart-bar dim" style="height:25%"></div>
                     </div>
                     <div style="display:flex;gap:8px;font-size:11px;color:#5E7267">
-                        <span>Jan 8</span><span style="margin-left:auto">Jan 12</span>
+                        <span id="chartStart">Jan 8</span><span id="chartEnd" style="margin-left:auto">Jan 12</span>
                     </div>
                 </div>
 
@@ -1351,7 +1353,7 @@
                         <div class="reading-row-left">
                             <span class="reading-ean">EAN 33349975</span>
                             <span class="reading-val">53 095 kWh</span>
-                            <span class="reading-date">Last reading: 01/12/2024</span>
+                            <span class="reading-date" id="lastReadingDate">Last reading: 01/12/2024</span>
                         </div>
                         <button class="reading-cta">Submit reading</button>
                     </div>
@@ -1363,7 +1365,7 @@
                     <div class="invoice-row">
                         <div>
                             <div class="invoice-amount">€ 87.40 <span>/ month</span></div>
-                            <div style="font-size:11px;color:#5E7267;margin-top:2px">Due 31 Jan 2025</div>
+                            <div style="font-size:11px;color:#5E7267;margin-top:2px" id="invoiceDue">Due 31 Jan 2025</div>
                         </div>
                         <div class="invoice-badge">Paid ✓</div>
                     </div>
@@ -1378,7 +1380,7 @@
                         </div>
                         <div>
                             <div style="font-size:13px;font-weight:700;color:#223D32">Electricity · Single-phase</div>
-                            <div style="font-size:11px;color:#5E7267">Energy Street 12 · Active since 03/2021</div>
+                            <div style="font-size:11px;color:#5E7267" id="contractSince">St Juliaanstraat 102 · Active since 03/2021</div>
                         </div>
                         <div style="margin-left:auto;background:#E6F6EE;color:#00A651;border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700">Active</div>
                     </div>
@@ -1566,7 +1568,7 @@
                 name: 'Basic Charge',
                 tagline: 'Portable Type 2 cable · No installation needed',
                 price: 'From €349',
-                img: 'assets/product-basic.jpg',
+                img: 'assets/product-basic.svg',
                 badgeColor: '#377E51',
                 badge: 'Most popular',
                 detail: 'The Basic Charge is the perfect starter solution:\n\n• Portable Type 2 cable (7m), charges at 7kW\n• Full charge overnight — no wall installation needed\n• Compatible with all EV brands\n• Price: from €349 all-in\n\nIdeal if you want a simple, flexible solution without any installation work.'
@@ -1574,22 +1576,22 @@
             {
                 id: 'comfort',
                 name: 'Comfort Charge',
-                tagline: 'Wallbox Pulsar Plus · Smart home charging 11kW',
+                tagline: 'EnergyCo Charge Plus · Smart home charging 11kW',
                 price: 'From €899',
-                img: 'assets/product-comfort.jpg',
+                img: 'assets/product-comfort.svg',
                 badgeColor: '#00A651',
                 badge: 'Recommended',
-                detail: 'Our most popular choice for homeowners:\n\n• Wallbox Pulsar Plus, charges at 11kW — 4× faster than a socket\n• Built-in Wi-Fi & app control for smart scheduling\n• Professional installation by a EnergyCo-approved electrician included\n• Price: from €899 all-in\n\nPerfect for fast, smart daily home charging.'
+                detail: 'Our most popular choice for homeowners:\n\n• EnergyCo Charge Plus, charges at 11kW — 4× faster than a socket\n• Built-in Wi-Fi & app control for smart scheduling\n• Professional installation by a EnergyCo-approved electrician included\n• Price: from €899 all-in\n\nPerfect for fast, smart daily home charging.'
             },
             {
                 id: 'smart',
                 name: 'Smart Charge',
-                tagline: 'Wallbox Pulsar Pro · 22kW + solar integration',
+                tagline: 'EnergyCo Charge Pro · 22kW + solar integration',
                 price: 'From €1,499',
-                img: 'assets/product-smart.jpg',
+                img: 'assets/product-smart.svg',
                 badgeColor: '#F47920',
                 badge: 'Best value',
-                detail: 'The premium all-in-one energy solution:\n\n• Wallbox Pulsar Pro, up to 22kW (3-phase)\n• Full solar panel integration — charge with your own energy\n• Dynamic load balancing + energy reports\n• Professional installation + commissioning included\n• Price: from €1,499 all-in\n\nBest for maximum speed, solar integration and full energy control.'
+                detail: 'The premium all-in-one energy solution:\n\n• EnergyCo Charge Pro, up to 22kW (3-phase)\n• Full solar panel integration — charge with your own energy\n• Dynamic load balancing + energy reports\n• Professional installation + commissioning included\n• Price: from €1,499 all-in\n\nBest for maximum speed, solar integration and full energy control.'
             }
         ];
 
@@ -1613,6 +1615,46 @@
         const _reminder     = new Date(); _reminder.setDate(_reminder.getDate() + 6);
         const interruptionDate = formatDate(_interruption);
         const reminderDate     = formatDate(_reminder);
+
+        // ── Make the static home-screen dates relative to today so nothing looks stale ──
+        (function refreshHomeScreenDates() {
+            const now = new Date();
+            const pad = n => String(n).padStart(2, '0');
+
+            // Consumption card header month = current month
+            const elCL = document.getElementById('consumptionLabel');
+            if (elCL) elCL.textContent = 'Your consumption · ' + now.toLocaleDateString('en-GB', { month: 'long' });
+
+            // Consumption chart window: a 5-day span ending yesterday
+            const cEnd = new Date(now);   cEnd.setDate(cEnd.getDate() - 1);
+            const cStart = new Date(cEnd); cStart.setDate(cStart.getDate() - 4);
+            const shortMD = d => d.toLocaleDateString('en-GB', { month: 'short', day: 'numeric' });
+            const elCS = document.getElementById('chartStart');
+            const elCE = document.getElementById('chartEnd');
+            if (elCS) elCS.textContent = shortMD(cStart);
+            if (elCE) elCE.textContent = shortMD(cEnd);
+
+            // Last meter reading: the 1st of last month
+            const lastRead = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+            const elLR = document.getElementById('lastReadingDate');
+            if (elLR) elLR.textContent = 'Last reading: ' + pad(lastRead.getDate()) + '/' + pad(lastRead.getMonth() + 1) + '/' + lastRead.getFullYear();
+
+            // Invoice due: last day of the current month
+            const due = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+            const elDue = document.getElementById('invoiceDue');
+            if (elDue) elDue.textContent = 'Due ' + due.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+
+            // Contract active since: keep the month, anchor ~4 years before this year
+            const elSince = document.getElementById('contractSince');
+            if (elSince) elSince.textContent = 'St Juliaanstraat 102 · Active since 03/' + (now.getFullYear() - 4);
+        })();
+
+        // ── Tapping the EnergyCo logo returns to the home screen ──────────────
+        function goHome() {
+            if (isOpen) { toggleChat(); }               // close the chat if it's open
+            const body = document.querySelector('.app-body');
+            if (body) body.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
         // ── Launcher toggle ───────────────────────────────────────────────────
         function toggleChat() {

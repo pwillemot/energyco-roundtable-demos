@@ -57,8 +57,9 @@ function unlockToWhatsApp() {
 
 const DAY_NAMES   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-const SLOT_NUMS   = ['1️⃣','2️⃣','3️⃣','4️⃣','5️⃣'];
-const SLOT_TIMES  = ['09:00 – 12:00','13:00 – 17:00'];
+const SLOT_NUMS   = ['1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','6️⃣'];
+// Concrete, realistic 2–3h windows that rotate across the available days
+const SLOT_WINDOWS = ['09:00 – 11:00','10:00 – 13:00','14:00 – 16:00','11:00 – 13:00','15:00 – 17:00'];
 
 /* Gaussian Easter algorithm */
 function easterDate(year) {
@@ -108,24 +109,33 @@ function isWorkday(d) {
 
 const allSlots = [];
 
-function buildSlotMessage(skipWorkdays, count) {
-  const d = new Date();
-  d.setHours(0, 0, 0, 0);
-  let skipped = 0;
-  while (skipped < skipWorkdays) {
-    d.setDate(d.getDate() + 1);
-    if (isWorkday(d)) skipped++;
-  }
+// A running cursor over the calendar, and a rotating index into SLOT_WINDOWS,
+// so both weeks continue from where the previous one left off.
+const _slotCursor = new Date();
+_slotCursor.setHours(0, 0, 0, 0);
+let _windowIdx = 0;
+
+// Availability pattern per week: true = technician available (bookable),
+// false = day shown in the overview but with no available time slot.
+const WEEK1_PATTERN = [true, false, true, true, true];  // 4 bookable
+const WEEK2_PATTERN = [true, true, false, true, true];  // 4 bookable
+const WEEK1_BOOKABLE = WEEK1_PATTERN.filter(Boolean).length;
+
+function buildSlotMessage(pattern) {
   const lines = [];
-  let collected = 0;
-  while (collected < count) {
-    d.setDate(d.getDate() + 1);
-    if (isWorkday(d)) {
-      const label = `${DAY_NAMES[d.getDay()]} ${d.getDate()} ${MONTH_NAMES[d.getMonth()]}`;
-      const time = SLOT_TIMES[collected % 2];
+  let numbered = 0;
+  for (const available of pattern) {
+    // advance to the next workday
+    do { _slotCursor.setDate(_slotCursor.getDate() + 1); } while (!isWorkday(_slotCursor));
+    const label = `${DAY_NAMES[_slotCursor.getDay()]} ${_slotCursor.getDate()} ${MONTH_NAMES[_slotCursor.getMonth()]}`;
+    if (available) {
+      const time = SLOT_WINDOWS[_windowIdx % SLOT_WINDOWS.length];
+      _windowIdx++;
       allSlots.push({ label, time });
-      lines.push(`${SLOT_NUMS[collected]} *${label}*\n    🕐 ${time}`);
-      collected++;
+      lines.push(`${SLOT_NUMS[numbered]} *${label}*\n    🕐 ${time}`);
+      numbered++;
+    } else {
+      lines.push(`▫️ *${label}*\n    ⚪ No available time slot`);
     }
   }
   return lines.join('\n');
@@ -141,9 +151,9 @@ function getChosenSlot(userText, offset = 0) {
 const SCRIPT = [
   { agent: "Hi Marie! Our technician is scheduled to install your smart meter tomorrow at 10:00. If that time no longer works for you, you can easily reschedule right here in this conversation."},
   { agent: "No worries at all, Marie! 😊 Let me check when our technician is available next week…", autoNext: true },
-  { agent: `Great news — I found a few openings! Just reply with the number of your preferred slot:\n\n${buildSlotMessage(0, 5)}` },
+  { agent: `Great news — I found a few openings! Just reply with the number of your preferred slot:\n\n${buildSlotMessage(WEEK1_PATTERN)}` },
   { agent: "Let me look for next week availability.", autoNext: true },
-  { agent: `I found some new openings for the following week! Just reply with the number of your preferred slot:\n\n${buildSlotMessage(5, 5)}` },
+  { agent: `I found some new openings for the following week! Just reply with the number of your preferred slot:\n\n${buildSlotMessage(WEEK2_PATTERN)}` },
   { agent: "You're all set! 🎉 Our technician will come to install your smart meter on *{slot}*. You'll receive a confirmation by email shortly.\n\nIs there anything else I can help you with?" },
   { agent: "Thank you for choosing EnergyCo — see you soon! ⚡" },
 ];
@@ -342,7 +352,7 @@ function handleSend() {
     const chosen = getChosenSlot(text, 0);
     if (chosen) capturedSlot = chosen;
   } else if (scriptIndex === 4) {
-    const chosen = getChosenSlot(text, 5);
+    const chosen = getChosenSlot(text, WEEK1_BOOKABLE);
     if (chosen) capturedSlot = chosen;
   }
 
